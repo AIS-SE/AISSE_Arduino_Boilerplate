@@ -1,3 +1,7 @@
+# Arduino | 37 in 1 Sensors Kit Explained
+
+[37 in 1 Sensors](https://www.instructables.com/Arduino-37-in-1-Sensors-Kit-Explained/)
+
 # Ardunio Boilerplate
 
 ## Index
