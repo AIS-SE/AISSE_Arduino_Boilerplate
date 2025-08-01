@@ -1,7 +1,7 @@
 /*
   Purpose: Basic example of reading data from the 3-Axis Accelerometer.
   Author: Ren Lee
-  Library and Coding Source: https://randomnerdtutorials.com/arduino-mpu-6050-accelerometer-gyroscope/
+  Arduino Guide: https://randomnerdtutorials.com/arduino-mpu-6050-accelerometer-gyroscope/
 */
 
 // This example use I2C.
@@ -10,7 +10,6 @@
 // ESP32 Guide: https://RandomNerdTutorials.com/esp32-mpu-6050-accelerometer-gyroscope-arduino/
 // ESP8266 Guide: https://RandomNerdTutorials.com/esp8266-nodemcu-mpu-6050-accelerometer-gyroscope-arduino/
 // Arduino Guide: https://RandomNerdTutorials.com/arduino-mpu-6050-accelerometer-gyroscope/
-
 
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
