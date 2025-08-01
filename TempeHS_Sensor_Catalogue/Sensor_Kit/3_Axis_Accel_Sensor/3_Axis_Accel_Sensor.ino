@@ -1,54 +1,128 @@
 /*
   Purpose: Basic example of reading data from the 3-Axis Accelerometer.
-  Notes:
-    1. Connect to I2C - Default 0x19, can be changed to 0x18 when connecting SDO Pin with GND
-    2. Measurement range: ±2g, ±4g, ±8g, ±16g, multiple ranges selection.
-  Author: Ben Jones 14/7/23
-  Contact: benjmain.jones21@det.nsw.edu.au
-  Source: https://wiki.seeedstudio.com/Grove-3-Axis-Digital-Accelerometer-LIS3DHTR/
-  Library Source: https://github.com/Seeed-Studio/Seeed_Arduino_LIS3DHTR
+  Author: Ren Lee
+  Library and Coding Source: https://randomnerdtutorials.com/arduino-mpu-6050-accelerometer-gyroscope/
 */
 
 // This example use I2C.
-#include "LIS3DHTR.h"
-#include <Wire.h>
-LIS3DHTR<TwoWire> LIS; //IIC
-#define WIRE Wire
+// Basic demo for accelerometer readings from Adafruit MPU6050
 
-void setup()
-{
-  Serial.begin(9600);
-  LIS.begin(WIRE,0x19); //Configure wire communciation to 0x19 address
-  LIS.openTemp();
-  delay(100);
-    LIS.setFullScaleRange(LIS3DHTR_RANGE_2G);
-  //  LIS.setFullScaleRange(LIS3DHTR_RANGE_4G);
-  //  LIS.setFullScaleRange(LIS3DHTR_RANGE_8G);
-  //  LIS.setFullScaleRange(LIS3DHTR_RANGE_16G);
-  //  LIS.setOutputDataRate(LIS3DHTR_DATARATE_1HZ);
-  //  LIS.setOutputDataRate(LIS3DHTR_DATARATE_10HZ);
-  //  LIS.setOutputDataRate(LIS3DHTR_DATARATE_25HZ);
-  LIS.setOutputDataRate(LIS3DHTR_DATARATE_50HZ);
-  //  LIS.setOutputDataRate(LIS3DHTR_DATARATE_100HZ);
-  //  LIS.setOutputDataRate(LIS3DHTR_DATARATE_200HZ);
-  //  LIS.setOutputDataRate(LIS3DHTR_DATARATE_1_6KHZ);
-  //  LIS.setOutputDataRate(LIS3DHTR_DATARATE_5KHZ);
-}
-void loop()
-{
-  if (!LIS)
-  {
-    Serial.println("LIS3DHTR didn't connect.");
-    while (1)
-      ;
-    return;
+// ESP32 Guide: https://RandomNerdTutorials.com/esp32-mpu-6050-accelerometer-gyroscope-arduino/
+// ESP8266 Guide: https://RandomNerdTutorials.com/esp8266-nodemcu-mpu-6050-accelerometer-gyroscope-arduino/
+// Arduino Guide: https://RandomNerdTutorials.com/arduino-mpu-6050-accelerometer-gyroscope/
+
+
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
+
+Adafruit_MPU6050 mpu;
+
+void setup(void) {
+  Serial.begin(115200);
+  while (!Serial)
+    delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  Serial.println("Adafruit MPU6050 test!");
+
+  // Try to initialize!
+  if (!mpu.begin()) {
+    Serial.println("Failed to find MPU6050 chip");
+    while (1) {
+      delay(10);
+    }
   }
-  //3 axis
-  Serial.print("x:"); Serial.print(LIS.getAccelerationX()); Serial.print("  ");
-  Serial.print("y:"); Serial.print(LIS.getAccelerationY()); Serial.print("  ");
-  Serial.print("z:"); Serial.println(LIS.getAccelerationZ());
-  //temperature
-  Serial.print("temp:");
-  Serial.println(LIS.getTemperature());
-  delay(500); 
+  Serial.println("MPU6050 Found!");
+
+  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  Serial.print("Accelerometer range set to: ");
+  switch (mpu.getAccelerometerRange()) {
+  case MPU6050_RANGE_2_G:
+    Serial.println("+-2G");
+    break;
+  case MPU6050_RANGE_4_G:
+    Serial.println("+-4G");
+    break;
+  case MPU6050_RANGE_8_G:
+    Serial.println("+-8G");
+    break;
+  case MPU6050_RANGE_16_G:
+    Serial.println("+-16G");
+    break;
+  }
+  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+  Serial.print("Gyro range set to: ");
+  switch (mpu.getGyroRange()) {
+  case MPU6050_RANGE_250_DEG:
+    Serial.println("+- 250 deg/s");
+    break;
+  case MPU6050_RANGE_500_DEG:
+    Serial.println("+- 500 deg/s");
+    break;
+  case MPU6050_RANGE_1000_DEG:
+    Serial.println("+- 1000 deg/s");
+    break;
+  case MPU6050_RANGE_2000_DEG:
+    Serial.println("+- 2000 deg/s");
+    break;
+  }
+
+  mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
+  Serial.print("Filter bandwidth set to: ");
+  switch (mpu.getFilterBandwidth()) {
+  case MPU6050_BAND_260_HZ:
+    Serial.println("260 Hz");
+    break;
+  case MPU6050_BAND_184_HZ:
+    Serial.println("184 Hz");
+    break;
+  case MPU6050_BAND_94_HZ:
+    Serial.println("94 Hz");
+    break;
+  case MPU6050_BAND_44_HZ:
+    Serial.println("44 Hz");
+    break;
+  case MPU6050_BAND_21_HZ:
+    Serial.println("21 Hz");
+    break;
+  case MPU6050_BAND_10_HZ:
+    Serial.println("10 Hz");
+    break;
+  case MPU6050_BAND_5_HZ:
+    Serial.println("5 Hz");
+    break;
+  }
+
+  Serial.println("");
+  delay(100);
+}
+
+void loop() {
+  /* Get new sensor events with the readings */
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+
+  /* Print out the values */
+  Serial.print("Acceleration X: ");
+  Serial.print(a.acceleration.x);
+  Serial.print(", Y: ");
+  Serial.print(a.acceleration.y);
+  Serial.print(", Z: ");
+  Serial.print(a.acceleration.z);
+  Serial.println(" m/s^2");
+
+  Serial.print("Rotation X: ");
+  Serial.print(g.gyro.x);
+  Serial.print(", Y: ");
+  Serial.print(g.gyro.y);
+  Serial.print(", Z: ");
+  Serial.print(g.gyro.z);
+  Serial.println(" rad/s");
+
+  Serial.print("Temperature: ");
+  Serial.print(temp.temperature);
+  Serial.println(" degC");
+
+  Serial.println("");
+  delay(500);
 }
