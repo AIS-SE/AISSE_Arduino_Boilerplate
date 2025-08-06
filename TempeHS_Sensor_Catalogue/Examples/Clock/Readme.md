@@ -4,8 +4,13 @@ DS1302 module
 Library: To install RtcDs1302.h
 
 Connections:
-CLK/SCLK --> D5
-DAT/IO --> D4
-RST/CE --> D2
+
+CLK/SCLK --> Pin 5
+
+DAT/IO --> Pin 4
+
+RST/CE --> Pin 2
+
 VCC --> 3.3v - 5v
+
 GND --> GND
