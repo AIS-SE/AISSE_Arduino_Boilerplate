@@ -1,7 +1,7 @@
 
+<img width="733" height="379" alt="Screenshot 2025-08-07 at 10 31 30 AM" src="https://github.com/user-attachments/assets/36ab2d1a-e417-48af-af13-387e359e58bd" />
 
-https://randomnerdtutorials.com/guide-for-oled![Tutorial-for-Interfacing-OLED-Display-Module-With-Arduino-UNO-1](https://github.com/user-attachments/assets/d0ef7563-a4bd-497a-9313-7408d3720b36)
--display-with-arduino/
+https://randomnerdtutorials.com/guide-for-oled
 
 <img width="745" height="787" alt="image" src="https://github.com/user-attachments/assets/0c2d60a7-9e9d-4058-9f76-c62fce1559eb" />
 
